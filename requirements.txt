@@ -1,0 +1,4 @@
+flask
+funasr
+ffmpeg-python
+gunicorn

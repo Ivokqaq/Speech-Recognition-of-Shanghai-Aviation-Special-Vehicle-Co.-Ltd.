@@ -1,0 +1,41 @@
+2. 前端页面（templates/index.html）
+设计一个简单网页，包含上传表单和结果显示。
+
+html
+Preview
+Wrap
+Copy
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>语音转文字</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>语音转文字工具</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="audio" accept="audio/*" required>
+        <input type="submit" value="转录">
+    </form>
+
+    {% if turns %}
+        <h3>转录结果 (文件: {{ filename }})</h3>
+        <div class="transcript">
+            {% for turn in turns %}
+                <p><strong>Speaker {{ turn.speaker }}:</strong> {{ turn.text }}</p>
+            {% endfor %}
+        </div>
+        <button onclick="copyToClipboard()">复制结果</button>
+        <script>
+            function copyToClipboard() {
+                let text = "";
+                document.querySelectorAll(".transcript p").forEach(p => {
+                    text += p.textContent + "\n";
+                });
+                navigator.clipboard.writeText(text).then(() => alert("已复制到剪贴板"));
+            }
+        </script>
+    {% endif %}
+</body>
+</html>
