@@ -2,3 +2,4 @@ flask
 funasr
 ffmpeg-python
 gunicorn
+torch==2.4.1
