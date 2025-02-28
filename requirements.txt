@@ -3,3 +3,4 @@ funasr
 ffmpeg-python
 gunicorn
 torch==2.4.1
+torchaudio==2.4.1
