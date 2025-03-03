@@ -75,5 +75,5 @@ def index():
     return render_template("index.html", turns=None, filename=None)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # 默认 5000，Heroku 会覆盖
+    port = int(os.environ.get("PORT", 5000))  # Default to 5000 locally
     app.run(debug=False, host="0.0.0.0", port=port)
