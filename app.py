@@ -12,15 +12,23 @@ model = AutoModel(
     model="paraformer-zh", model_revision="v2.0.4",
     vad_model="fsmn-vad", vad_model_revision="v2.0.4",
     punc_model="ct-punc-c", punc_model_revision="v2.0.4",
-    spk_model="cam++", spk_model_revision="v2.0.2"
+    spk_model="cam++", spk_model_revision="v2.0.2",
+    # 增加以下参数
+    device="cpu",  # 强制使用CPU
+    chunk_size=5,  # 减小处理块大小
+    cache_dir="./model_cache"  # 指定独立的缓存目录
 )
 
 # 转换音频为 WAV 格式
 def convert_to_wav(input_path, output_path):
     try:
-        stream = ffmpeg.input(input_path)
-        stream = ffmpeg.output(stream, output_path, format="wav", acodec="pcm_s16le", ar=16000)
-        ffmpeg.run(stream, overwrite_output=True)
+        (
+            ffmpeg.input(input_path)
+            .output(output_path, format='wav', acodec='pcm_s16le', 
+                    ar=16000, ac=1)  # 强制单声道
+            .global_args('-af', 'highpass=f=200,lowpass=f=3000')  # 带通滤波
+            .run(overwrite_output=True)
+        )
     except ffmpeg.Error as e:
         raise Exception(f"音频转换失败: {e}")
 
